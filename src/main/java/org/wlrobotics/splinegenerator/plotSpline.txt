@@ -1,0 +1,29 @@
+set terminal wxt size 1300,750
+set multiplot
+set xrange[0:1849]
+set yrange[0:930]
+unset tics
+unset border
+set lmargin at screen 0.1
+set rmargin at screen 0.9
+set bmargin at screen 0.1
+set tmargin at screen 0.9
+plot 'PowerUP_PlotBackground.jpg' binary filetype=jpg w rgbimage
+set xrange[0:16.5354]
+set yrange[0:8.001]
+set border
+set tics
+set datafile separator ','
+set key autotitle columnhead
+unset key
+plot 'AutonSwitchRight_00.cvs' using 2:3 w lp lt rgb 'dark-green'
+plot 'AutonSwitchRight_01.cvs' using 2:3 w lp lt rgb 'dark-green'
+plot 'AutonSwitchRight_02.cvs' using 2:3 w lp lt rgb 'dark-green'
+plot 'AutonSwitchLeft_00.cvs' using 2:3 w lp lt rgb 'sea-green'
+plot 'AutonSwitchLeft_01.cvs' using 2:3 w lp lt rgb 'sea-green'
+plot 'AutonSwitchLeft_02.cvs' using 2:3 w lp lt rgb 'sea-green'
+plot 'AutonScaleRight_2Cube_00.cvs' using 2:3 w lp lt rgb 'blue'
+plot 'AutonScaleRight_2Cube_01.cvs' using 2:3 w lp lt rgb 'blue'
+plot 'AutonScaleRight_2Cube_02.cvs' using 2:3 w lp lt rgb 'blue'
+plot 'AutonScaleRight_CrossCourt_00.cvs' using 2:3 w lp lt rgb 'navy'
+replot

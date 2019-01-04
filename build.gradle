@@ -1,0 +1,90 @@
+apply plugin: 'base'
+apply plugin: 'groovy'
+apply plugin: 'java'
+apply plugin: 'application'
+
+def isWindows (){
+  return (System.properties['os.name'].toLowerCase().contains("windows"))
+}
+
+def isLinux() {
+  return (System.properties['os.name'].toLowerCase().contains("linux"))
+}
+
+wrapper {
+    distributionType = Wrapper.DistributionType.ALL
+    gradleVersion = "4.10.2"
+}
+
+dependencies {
+    compileClasspath fileTree(dir: 'libs/pathfinder', include: "**/*.jar")
+    runtimeClasspath fileTree(dir: 'libs/pathfinder', include: "**/*.jar")
+    compileClasspath fileTree(dir: 'libs/jniloader/JNILoader/1.0.1', include: "**/*.jar")
+    runtimeClasspath fileTree(dir: 'libs/jniloader/JNILoader/1.0.1', include: "**/*.jar")
+}
+
+application {
+    applicationName = "WL Robotics Spline Generator"
+    mainClassName ='org.wlrobotics.splinegenerator.TroBotSplineGenerator'
+}
+
+task cleanCVS(type: Delete) {
+  delete fileTree("${project.projectDir}").matching {
+    include "*.cvs"
+  }
+  delete fileTree("${project.buildDir}/resources/main").matching {
+    include "*.cvs"
+  }
+  delete file ("${project.projectDir}/gnuPlotCommands.txt")
+}
+
+task moveCVS() {
+  doLast {
+    ant.move (todir: "${project.buildDir}/resources/main", failonerror:true,) {
+      fileset (dir: "${project.projectDir}") {
+      include (name: "*.cvs")
+      }
+    }
+    appendGnuPlot.execute()
+  }
+}
+
+task plot (){
+    group "WL Robotics Spline Generator"
+    description "gnuPlot with the text file plotSpline.txt"
+    dependsOn('run')
+    doLast {
+      plot_win.execute ()
+      plot_lin.execute ()
+    }
+}
+
+task plot_win (type:Exec) {
+  // plots on Windows only
+  onlyIf {isWindows ()}
+  workingDir "${project.buildDir}/resources/main"
+  executable 'C:/Program Files/gnuplot/bin/gnuplot.exe'
+  args "${project.buildDir}/resources/main/plotSpline.txt", '-p'
+}
+
+task plot_lin (type:Exec) {
+  onlyIf { isLinux() }
+  workingDir = "${project.buildDir}/resources/main"
+  ignoreExitValue =  true
+  commandLine "gnuplot", "${project.buildDir}/resources/main/plotSpline.txt", "-p"
+}
+
+task appendGnuPlot(){
+  doLast{
+    def dest = new File ("${project.buildDir}/resources/main/plotSpline.txt")
+    def src = new File ("${project.projectDir}/gnuPlotCommands.txt")
+    src.eachLine {line ->
+      dest.append(line + "\n")
+    }
+    dest.append("replot\n")
+  }
+}
+
+clean.finalizedBy ("cleanCVS")
+run.dependsOn ("cleanCVS")
+run.finalizedBy ("moveCVS")
