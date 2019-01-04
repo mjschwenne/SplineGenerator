@@ -7,19 +7,25 @@ import jaci.pathfinder.Trajectory;
 import jaci.pathfinder.Waypoint;
 
 public class BasicSplineGenerator {
-	public static void main(String[] args) {
-		Waypoint[] points = new Waypoint[] {
-			    new Waypoint(3.6, 2.6, 0), 
-			    new Waypoint(2.25, 2.6, 0),
-			    new Waypoint(1.75, 3.3, Pathfinder.d2r(90)),
-			    new Waypoint(2.25, 4, 0),
-			    new Waypoint(2.5, 4, 0)
-			};
 
-			Trajectory.Config config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC, Trajectory.Config.SAMPLES_HIGH, 0.02, 1.7, 2.0, 60.0);
-			Trajectory trajectory = Pathfinder.generate(points, config);
-			
-			File test_spline = new File("spline_cube.cvs");
-			Pathfinder.writeToCSV(test_spline, trajectory);
+	public static void main(String[] args) {
+		genRCubeSwitch();
+	}
+
+	static void genRCubeSwitch() {
+		genSpline(SplineSettings.start2switchPoints, SplineSettings.start2switchFile);
+		genSpline(SplineSettings.switch2cubePoints, SplineSettings.switch2cubeFile);
+		genSpline(SplineSettings.cubeB2switchPoints, SplineSettings.cubeB2switchFile);
+	}
+
+	static void genSpline(Waypoint[] points, String fileName) {
+		Trajectory.Config config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC,
+				Trajectory.Config.SAMPLES_HIGH, SplineSettings.deltaTime, SplineSettings.maxVel,
+				SplineSettings.maxAccel, SplineSettings.maxJerk);
+
+		Trajectory trajectory = Pathfinder.generate(points, config);
+
+		File splineFile = new File(fileName);
+		Pathfinder.writeToCSV(splineFile, trajectory);
 	}
 }

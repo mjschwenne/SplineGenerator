@@ -16,5 +16,6 @@ set tics
 set datafile separator ','
 set key autotitle columnhead
 unset key
-plot 'spline.cvs' using 2:3 w lp
-plot 'spline_cube.cvs' using 2:3 w lp
+plot 'Auton_CenterRight_01.csv' using 2:3 w lp
+plot 'Auton_CenterRight_02.csv' using 2:3 w lp
+plot 'Auton_CenterRight_03.csv' using 2:3 w lp
