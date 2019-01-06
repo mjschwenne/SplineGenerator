@@ -19,24 +19,28 @@ public class TroBotSplineGenerator extends Object {
 		Trajectory.Config config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC,
 				Trajectory.Config.SAMPLES_HIGH, deltaTime, maxVel, maxAccel, maxJerk);
 
-		AutonSwitchRight autoSwitchRight = new AutonSwitchRight(config);
-		autoSwitchRight.generate();
-		autoSwitchRight = null;
+		// AutonSwitchRight autoSwitchRight = new AutonSwitchRight(config);
+		// autoSwitchRight.generate();
+		// autoSwitchRight = null;
 
-		AutonSwitchLeft autoSwitchLeft = new AutonSwitchLeft(config);
-		autoSwitchLeft.generate();
-		autoSwitchLeft = null;
+		// AutonSwitchLeft autoSwitchLeft = new AutonSwitchLeft(config);
+		// autoSwitchLeft.generate();
+		// autoSwitchLeft = null;
 
-		AutonScaleRight_2Cube right2Cube = new AutonScaleRight_2Cube(config);
-		right2Cube.generate();
-		right2Cube = null;
+		// AutonScaleRight_2Cube right2Cube = new AutonScaleRight_2Cube(config);
+		// right2Cube.generate();
+		// right2Cube = null;
 
-		Trajectory.Config configSlow = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC,
-				Trajectory.Config.SAMPLES_HIGH, deltaTime, maxVel/2.5, maxAccel, maxJerk);
+		// Trajectory.Config configSlow = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC,
+		// 		Trajectory.Config.SAMPLES_HIGH, deltaTime, maxVel/2.5, maxAccel, maxJerk);
 
-		AutonScaleRight_CrossCourt rightCrossCourt = new AutonScaleRight_CrossCourt(configSlow);
-		rightCrossCourt.generate();
-		rightCrossCourt = null;
+		// AutonScaleRight_CrossCourt rightCrossCourt = new AutonScaleRight_CrossCourt(configSlow);
+		// rightCrossCourt.generate();
+		// rightCrossCourt = null;
+
+		AutonCenterCloseHatch closeHatch = new AutonCenterCloseHatch(config);
+		closeHatch.generate();
+		closeHatch = null;
 
 	}
 }
