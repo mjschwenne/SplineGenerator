@@ -14,13 +14,20 @@ public class TroBotSplineGenerator extends Object {
 		Trajectory.Config config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC,
 				Trajectory.Config.SAMPLES_HIGH, deltaTime, maxVel, maxAccel, maxJerk);
 
-		AutonCenterCloseHatch closeHatch = new AutonCenterCloseHatch(config);
-		closeHatch.generate();
-		closeHatch = null;
+		AutonCenter_HCL_CL3 HCL_CL3 = new AutonCenter_HCL_CL3(config);
+		HCL_CL3.generate();
+		HCL_CL3 = null;
+
+		AutonCenter_HCR_CR3 HCR_CR3 = new AutonCenter_HCR_CR3(config);
+		HCR_CR3.generate();
+		HCR_CR3 = null;
 
 		AutonRight_HR1_HCR HR1_HCR = new AutonRight_HR1_HCR(config);
 		HR1_HCR.generate();
 		HR1_HCR = null;
 
+		AutonLeft_HL1_HCL HL1_HCL = new AutonLeft_HL1_HCL(config);
+		HL1_HCL.generate();
+		HL1_HCL = null;
 	}
 }
